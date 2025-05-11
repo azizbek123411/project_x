@@ -6,7 +6,8 @@ import 'package:project_x/widgets/auth_fields.dart';
 import 'package:project_x/widgets/buttons.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final void Function()? onTap;
+  const LoginPage({super.key,required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -61,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                         text: '  Sign Up',
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
-                        recognizer: TapGestureRecognizer()..onTap = () {})
+                        recognizer: TapGestureRecognizer()..onTap = widget.onTap),
                   ]))
             ],
           ),
