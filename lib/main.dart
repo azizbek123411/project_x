@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project_x/firebase_options.dart';
+import 'package:project_x/service/auth/auth_gate.dart';
 
-import 'package:project_x/service/auth/login_register.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
      darkTheme: ThemeData.dark(),
-      home: LoginRegister(),
+      home: AuthGate(),
     );
   }
 }
