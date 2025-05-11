@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project_x/pages/navbar_pages/home_page.dart';
+import 'package:project_x/pages/auth_pages/login_page.dart';
+import 'package:project_x/pages/auth_pages/register_page.dart';
+import 'package:project_x/pages/main_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
      darkTheme: ThemeData.dark(),
-      home: HomePage(),
+      home: RegisterPage(),
     );
   }
 }

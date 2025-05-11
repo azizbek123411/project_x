@@ -13,7 +13,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int initialIndex=0;
-  List _pages=[
+  final List _pages=[
     HomePage(),
     SearchPage(),
     ProfilePage(),
@@ -22,11 +22,16 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: _pages[initialIndex],
+        children:[ _pages[initialIndex]],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: initialIndex,
         showSelectedLabels: true,
         showUnselectedLabels: false,
+        selectedLabelStyle: TextStyle(
+          color: Colors.white
+        ),
+
         onTap: (index){
           setState(() {
             initialIndex=index;
