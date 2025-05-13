@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:project_x/service/auth_service.dart';
+import 'package:project_x/service/auth/auth_service.dart';
 import 'package:project_x/widgets/loading_circle.dart';
 
 import '../../widgets/auth_fields.dart';
