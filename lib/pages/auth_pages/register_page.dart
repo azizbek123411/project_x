@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:project_x/service/auth/auth_service.dart';
+import 'package:project_x/service/database/database_service.dart';
 import 'package:project_x/widgets/loading_circle.dart';
 
 import '../../widgets/auth_fields.dart';
@@ -18,6 +19,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _auth = AuthService();
+  final _db = DatabaseService();
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -31,6 +33,10 @@ class _RegisterPageState extends State<RegisterPage> {
         await _auth.registerEmailPassword(
             emailController.text, passwordController.text);
         if (mounted) hideLoadingCircle(context);
+        await _db.saveUserInfoInFirebase(
+          name: nameController.text.trim(),
+          email: emailController.text.trim(),
+        );
       } catch (e, st) {
         log("Error:$e,StackTrace:$st");
         if (mounted) hideLoadingCircle(context);
@@ -44,14 +50,12 @@ class _RegisterPageState extends State<RegisterPage> {
           );
         }
       }
-    }else{
-       ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-               "Password do not match"
-              ),
-            ),
-          );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Password do not match"),
+        ),
+      );
     }
   }
 
@@ -62,11 +66,10 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: EdgeInsets.all(15),
         child: SizedBox(
           width: double.infinity,
-          height:double.infinity,
+          height: double.infinity,
           child: Center(
             child: SingleChildScrollView(
               child: Column(
-             
                 children: [
                   Icon(Icons.login, size: 100),
                   Text(
@@ -104,17 +107,19 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 10,
                   ),
                   RichText(
-                      text: TextSpan(
-                          text: "Already have account?",
-                          style: TextStyle(fontSize: 15),
-                          children: [
-                        TextSpan(
-                          text: '  Login',
-                          style:
-                              TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                          recognizer: TapGestureRecognizer()..onTap = widget.onTap,
-                        )
-                      ]),),
+                    text: TextSpan(
+                        text: "Already have account?",
+                        style: TextStyle(fontSize: 15),
+                        children: [
+                          TextSpan(
+                            text: '  Login',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = widget.onTap,
+                          )
+                        ]),
+                  ),
                 ],
               ),
             ),
