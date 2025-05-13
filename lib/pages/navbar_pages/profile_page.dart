@@ -55,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Center(
                 child: Text(isLoading ? '...' : "@${user!.username}"),
               ),
-              SizedBox(height:20),
+              SizedBox(height: 20),
               Center(
                 child: CircleAvatar(
                   backgroundColor: Colors.grey.shade900,
@@ -64,7 +64,22 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               SizedBox(height: 20),
-              MyBioBox(text:'Hell0' )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Edit Bio'),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.edit,
+                      size: 20,
+                    ),
+                  ),
+                ],
+              ),
+              MyBioBox(
+                text: isLoading ? '...' : user!.bio,
+              ),
             ],
           ),
         ));

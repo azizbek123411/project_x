@@ -12,7 +12,7 @@ class MyBioBox extends StatelessWidget {
         color: Colors.grey.shade900,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Text(text),
+      child: Text(text.isNotEmpty ? text : 'Empty Bio'),
     );
   }
 }
