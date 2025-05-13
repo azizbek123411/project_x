@@ -1,36 +1,72 @@
-
-
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:project_x/models/user.dart';
 import 'package:project_x/service/auth/auth_service.dart';
+import 'package:project_x/service/database/database_provider.dart';
+import 'package:project_x/widgets/my_bio_box.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   final String uid;
-  const ProfilePage({super.key,required this.uid});
+  const ProfilePage({super.key, required this.uid});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final _auth=AuthService();
-  void logout()async{
+  late final databaseProvider =
+      Provider.of<DatabaseProvider>(context, listen: false);
+  UserProfile? user;
+  String currentUserid = AuthService().getCurrentUid();
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadUsers();
+  }
+
+  Future<void> loadUsers() async {
+    user = await databaseProvider.userProfile(currentUserid);
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  final _auth = AuthService();
+  void logout() async {
     await _auth.logOut();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Profile',style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),),
+          title: Text(
+            isLoading ? '...' : user!.name,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
         ),
-        body:Center(
-          child:Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: ListView(
             children: [
-              Icon(Icons.person,size: 100,),
-              Text(widget.uid,)
+              Center(
+                child: Text(isLoading ? '...' : "@${user!.username}"),
+              ),
+              SizedBox(height:20),
+              Center(
+                child: CircleAvatar(
+                  backgroundColor: Colors.grey.shade900,
+                  radius: 70,
+                  child: Icon(Icons.person, size: 100),
+                ),
+              ),
+              SizedBox(height: 20),
+              MyBioBox(text:'Hell0' )
             ],
-          )
-        )
-    );
+          ),
+        ));
   }
 }
