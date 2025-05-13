@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_x/pages/navbar_pages/home_page.dart';
+import 'package:project_x/service/auth/auth_service.dart';
 
 import 'navbar_pages/profile_page.dart';
 import 'navbar_pages/search_page.dart';
@@ -12,11 +13,15 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
+final _auth=AuthService();
+
+
   int initialIndex=0;
   final List _pages=[
     HomePage(),
     SearchPage(),
-    ProfilePage(),
+    ProfilePage(uid: AuthService().getCurrentUid(),),
   ];
   @override
   Widget build(BuildContext context) {

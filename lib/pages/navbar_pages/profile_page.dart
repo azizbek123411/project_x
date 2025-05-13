@@ -1,10 +1,11 @@
-import 'dart:math';
+
 
 import 'package:flutter/material.dart';
 import 'package:project_x/service/auth/auth_service.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final String uid;
+  const ProfilePage({super.key,required this.uid});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -19,9 +20,17 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Profile Page'),
+          title: const Text('Profile',style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),),
         ),
-        body: IconButton(onPressed: logout, icon: Icon(Icons.logout)),
+        body:Center(
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.person,size: 100,),
+              Text(widget.uid,)
+            ],
+          )
+        )
     );
   }
 }
