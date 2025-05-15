@@ -1,4 +1,4 @@
-import 'package:flutter/gestures.dart';
+
 import 'package:flutter/material.dart';
 import 'package:project_x/models/user.dart';
 import 'package:project_x/service/auth/auth_service.dart';
@@ -36,10 +36,21 @@ class _ProfilePageState extends State<ProfilePage> {
           return MyInputAlertBox(
             controller: controller,
             hintTitle: 'Edit',
-            onTap: () {},
+            onTap: updateBio,
             onPressedText: 'Save',
           );
         });
+  }
+
+  Future<void> updateBio() async {
+    setState(() {
+      isLoading = true;
+    });
+    await databaseProvider.updateUserBio(controller.text);
+    await loadUsers();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future<void> loadUsers() async {
@@ -97,6 +108,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ],
           ),
-        ));
+        ),);
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyInputAlertBox extends StatelessWidget {
   final TextEditingController controller;
   final String hintTitle;
-  final void Function() onTap;
+  final void Function()? onTap;
   final String onPressedText;
   const MyInputAlertBox({
     super.key,
@@ -28,12 +28,12 @@ class MyInputAlertBox extends StatelessWidget {
         ),
          TextButton(
           onPressed: () {
-            onTap();
-            Navigator.pop(context);
            
+            Navigator.pop(context);
+            onTap!();
           },
           child: Text(
-            'Save',
+            onPressedText,
           ),
         ),
       ],
@@ -41,6 +41,7 @@ class MyInputAlertBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       content: TextField(
+        controller: controller,
         maxLength: 120,
         maxLines: 3,
         decoration:
