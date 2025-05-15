@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:project_x/models/post.dart';
 import 'package:project_x/models/user.dart';
 import 'package:project_x/service/auth/auth_service.dart';
 
@@ -41,6 +42,30 @@ class DatabaseService {
     String uid = AuthService().getCurrentUid();
     try {
       await _db.collection('Users').doc(uid).update({'bio': bio});
+    } catch (e, st) {
+      log("Error:$e, StackTrace:$st");
+    }
+  }
+
+  Future<void> postMessageInFirebase(String message) async {
+    try {
+      final uid = _auth.currentUser!.uid;
+      UserProfile? user = await getUserFromFirebase(uid);
+
+      Post newPost = Post(
+        id: '',
+        uid: uid,
+        name: user!.name,
+        username: user.username,
+        message: message,
+        timestamp: Timestamp.now(),
+        likeCount: 0,
+        likedBy: [],
+      );
+
+      Map<String, dynamic> newPostMap = newPost.toDoc();
+
+      await _db.collection('Posts').add(newPostMap);
     } catch (e, st) {
       log("Error:$e, StackTrace:$st");
     }
