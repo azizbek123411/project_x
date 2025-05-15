@@ -4,6 +4,7 @@ import 'package:project_x/models/user.dart';
 import 'package:project_x/service/auth/auth_service.dart';
 import 'package:project_x/service/database/database_provider.dart';
 import 'package:project_x/widgets/my_bio_box.dart';
+import 'package:project_x/widgets/my_input_alert_box.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -15,6 +16,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final controller = TextEditingController();
   late final databaseProvider =
       Provider.of<DatabaseProvider>(context, listen: false);
   UserProfile? user;
@@ -25,6 +27,19 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     loadUsers();
+  }
+
+  void showEditBioBox() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return MyInputAlertBox(
+            controller: controller,
+            hintTitle: 'Edit',
+            onTap: () {},
+            onPressedText: 'Save',
+          );
+        });
   }
 
   Future<void> loadUsers() async {
@@ -69,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text('Edit Bio'),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: showEditBioBox,
                     icon: Icon(
                       Icons.edit,
                       size: 20,
