@@ -3,7 +3,8 @@ import 'package:project_x/models/post.dart';
 
 class PostTile extends StatefulWidget {
   final Post post;
-  const PostTile({super.key, required this.post});
+  final void Function()? onUserTap;
+  const PostTile({super.key, required this.post,required this.onUserTap});
 
   @override
   State<PostTile> createState() => _PostTileState();
@@ -18,20 +19,26 @@ class _PostTileState extends State<PostTile> {
       children: [
         Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: CircleAvatar(
-                radius: 16,
-                child: Icon(
-                  Icons.person,
+            GestureDetector(
+              onTap: widget.onUserTap,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: CircleAvatar(
+                  radius: 16,
+                  child: Icon(
+                    Icons.person,
+                  ),
                 ),
               ),
             ),
-            Text(
-              ' ${widget.post.name}',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
+            GestureDetector(
+              onTap: widget.onUserTap,
+              child: Text(
+                ' ${widget.post.name}',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Text(

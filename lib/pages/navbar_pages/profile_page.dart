@@ -136,7 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         final post=filterPosts[index];
-                        return PostTile(post: post);
+                        return PostTile(post: post, onUserTap: () {  },);
                       }),
                 )
           ],

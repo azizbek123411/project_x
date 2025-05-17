@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:project_x/helper/navigation.dart';
 import 'package:project_x/service/database/database_provider.dart';
 import 'package:project_x/widgets/my_input_alert_box.dart';
 import 'package:project_x/widgets/post_tile.dart';
 import 'package:provider/provider.dart';
-
-
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -53,30 +52,34 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final posts=listeningProvider.getAllPosts;
+    final posts = listeningProvider.getAllPosts;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Page'),
       ),
       body: posts.isEmpty
-        ? Center(
-            child: Text(
-              'No posts available',
-              style: TextStyle(fontSize: 18),
-            ),
-          )
-        : ListView.builder(
-            itemCount: posts.length,
-            itemBuilder: (context, index) {
-              final post = posts[index];
-              return PostTile(post: post);
-            }),
+          ? Center(
+              child: Text(
+                'No posts available',
+                style: TextStyle(fontSize: 18),
+              ),
+            )
+          : ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (context, index) {
+                final post = posts[index];
+                return PostTile(
+                  post: post,
+                  onUserTap: () => goUserProfile(
+                    context,
+                    post.uid,
+                  ),
+                );
+              }),
       floatingActionButton: FloatingActionButton(
         onPressed: _openMessageBox,
         child: Icon(Icons.add),
       ),
     );
   }
-
-  
 }
