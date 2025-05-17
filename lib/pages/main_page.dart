@@ -14,7 +14,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
-final _auth=AuthService();
+
 
 
   int initialIndex=0;
