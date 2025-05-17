@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:project_x/service/database/database_provider.dart';
 import 'package:project_x/widgets/my_input_alert_box.dart';
+import 'package:project_x/widgets/post_tile.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/post.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,6 +29,7 @@ class _HomePageState extends State<HomePage> {
             hintTitle: 'New Post',
             onTap: () async {
               await postMessage(controller.text);
+              controller.clear();
             },
             onPressedText: 'Post',
           );
@@ -51,20 +53,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final posts=listeningProvider.getAllPosts;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Page'),
       ),
-      body: buildPostList(listeningProvider.getAllPosts),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _openMessageBox,
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-
-  Widget buildPostList(List<Post> posts) {
-    return posts.isEmpty
+      body: posts.isEmpty
         ? Center(
             child: Text(
               'No posts available',
@@ -75,17 +69,14 @@ class _HomePageState extends State<HomePage> {
             itemCount: posts.length,
             itemBuilder: (context, index) {
               final post = posts[index];
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8,right: 8,bottom: 4),
-                    child: Text(post.message,style: TextStyle(fontSize: 18),),
-                  ),
-                  Divider(),
-                ],
-              );
-            });
+              return PostTile(post: post);
+            }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _openMessageBox,
+        child: Icon(Icons.add),
+      ),
+    );
   }
+
+  
 }

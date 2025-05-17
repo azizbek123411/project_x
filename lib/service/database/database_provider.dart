@@ -15,6 +15,7 @@ class DatabaseProvider extends ChangeNotifier {
 
   Future<void> postMessage(String message) async {
     await _db.postMessageInFirebase(message);
+    await loadAllPosts();
   }
 
   Future<void> loadAllPosts() async {
