@@ -10,10 +10,16 @@ class DatabaseProvider extends ChangeNotifier {
 
   Future<void> updateUserBio(String bio) => _db.updateUserBioInFirebase(bio);
 
-  List<Post> allPosts = [];
-  List<Post> get getAllPosts => allPosts;
+  List<Post> _allPosts = [];
+  List<Post> get getAllPosts => _allPosts;
 
   Future<void> postMessage(String message) async {
     await _db.postMessageInFirebase(message);
+  }
+
+  Future<void> loadAllPosts() async {
+    final allPosts = await _db.getAllPostsFromFirebase();
+    _allPosts = allPosts;
+    notifyListeners();
   }
 }

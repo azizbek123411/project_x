@@ -70,4 +70,17 @@ class DatabaseService {
       log("Error:$e, StackTrace:$st");
     }
   }
+
+  Future<List<Post>> getAllPostsFromFirebase() async {
+    try {
+      QuerySnapshot snapshot = await _db
+          .collection('Posts')
+          .orderBy('timestamp', descending: true)
+          .get();
+      return snapshot.docs.map((doc) => Post.fromDocument(doc)).toList();
+    } catch (e, st) {
+      log("Error:$e, StackTrace:$st");
+      return [];
+    }
+  }
 }
