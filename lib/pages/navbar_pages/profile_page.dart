@@ -7,6 +7,8 @@ import 'package:project_x/widgets/my_input_alert_box.dart';
 import 'package:project_x/widgets/post_tile.dart';
 import 'package:provider/provider.dart';
 
+import '../../helper/navigation.dart';
+
 class ProfilePage extends StatefulWidget {
   final String uid;
   const ProfilePage({super.key, required this.uid});
@@ -56,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> loadUsers() async {
-    user = await databaseProvider.userProfile(currentUserid);
+    user = await databaseProvider.userProfile(widget.uid);
     setState(() {
       isLoading = false;
     });
@@ -129,16 +131,23 @@ class _ProfilePageState extends State<ProfilePage> {
                         )),
                   )
                 : Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                      itemCount: filterPosts.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        final post=filterPosts[index];
-                        return PostTile(post: post, onUserTap: () {  },);
-                      }),
-                )
+                    padding: EdgeInsets.only(top: 20),
+                    child: ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: filterPosts.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final post = filterPosts[index];
+                          return PostTile(
+                            post: post,
+                            onUserTap: () {},
+                            onPostTap: () => goToPostPage(
+                              context,
+                              post,
+                            ),
+                          );
+                        }),
+                  )
           ],
         ),
       ),

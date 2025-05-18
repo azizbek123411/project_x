@@ -4,7 +4,13 @@ import 'package:project_x/models/post.dart';
 class PostTile extends StatefulWidget {
   final Post post;
   final void Function()? onUserTap;
-  const PostTile({super.key, required this.post,required this.onUserTap});
+  final void Function()? onPostTap;
+  const PostTile({
+    super.key,
+    required this.post,
+    required this.onUserTap,
+    required this.onPostTap,
+  });
 
   @override
   State<PostTile> createState() => _PostTileState();
@@ -44,20 +50,38 @@ class _PostTileState extends State<PostTile> {
             Text(
               '  @${widget.post.username}',
               style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w200,
-                  color: Colors.grey),
+                fontSize: 14,
+                fontWeight: FontWeight.w200,
+                color: Colors.grey,
+              ),
             ),
           ],
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 8, right: 8, bottom: 4, top: 6),
-          child: Text(
-            widget.post.message,
-            style: TextStyle(fontSize: 18),
+          padding: const EdgeInsets.only(
+            left: 8,
+            right: 8,
+            bottom: 4,
+            top: 6,
+          ),
+          child: GestureDetector(
+            onTap: widget.onPostTap,
+            child: SizedBox(
+              width: double.infinity,
+              child: Row(
+                children: [
+                  Text(
+                    widget.post.message,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-        Divider(),
+        Divider(
+          color: Colors.grey.shade800,
+        ),
       ],
     );
   }

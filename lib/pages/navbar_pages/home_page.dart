@@ -74,6 +74,10 @@ class _HomePageState extends State<HomePage> {
                     context,
                     post.uid,
                   ),
+                  onPostTap: () => goToPostPage(
+                    context,
+                    post,
+                  ),
                 );
               }),
       floatingActionButton: FloatingActionButton(
