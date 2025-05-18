@@ -23,7 +23,7 @@ class Post {
 
   factory Post.fromDocument(DocumentSnapshot doc) {
     return Post(
-      id: doc['id'],
+      id: doc.id,
       uid: doc['uid'],
       name: doc['name'],
       username: doc['username'],

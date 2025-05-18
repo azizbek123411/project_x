@@ -22,3 +22,7 @@ void goToPostPage(BuildContext context, Post post) {
     ),
   );
 }
+
+void pop(BuildContext context){
+  Navigator.pop(context);
+}

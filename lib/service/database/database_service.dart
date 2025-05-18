@@ -83,4 +83,20 @@ class DatabaseService {
       return [];
     }
   }
+
+  Future<void> deletePostFromFirebase(String postId) async {
+    try {
+      await _db.collection('Posts').doc(postId).delete();
+    } catch (e, st) {
+      log("Error:$e, StackTrace:$st");
+    }
+  }
+
+  Future<void> updatePostInFirebase(String postId, String message) async {
+    try {
+      await _db.collection('Posts').doc(postId).update({'message': message});
+    } catch (e, st) {
+      log("Error:$e, StackTrace:$st");
+    }
+  }
 }
