@@ -23,10 +23,11 @@ class PostTile extends StatefulWidget {
 }
 
 class _PostTileState extends State<PostTile> {
-
-
-late final databaseProvider=Provider.of<DatabaseProvider>(context,listen: false);
-late final listeningProvider=Provider.of<DatabaseProvider>(context,);
+  late final databaseProvider =
+      Provider.of<DatabaseProvider>(context, listen: false);
+  late final listeningProvider = Provider.of<DatabaseProvider>(
+    context,
+  );
 
   void _showOptions() {
     String currentUid = AuthService().getCurrentUid();
@@ -40,7 +41,7 @@ late final listeningProvider=Provider.of<DatabaseProvider>(context,);
                 ListTile(
                   leading: Icon(Icons.delete),
                   title: Text('Delete'),
-                  onTap: ()async {
+                  onTap: () async {
                     log(widget.post.id);
                     await databaseProvider.deletePost(widget.post.id);
                     pop(context);
@@ -48,11 +49,15 @@ late final listeningProvider=Provider.of<DatabaseProvider>(context,);
                 )
               else ...[
                 ListTile(
-                  leading: Icon(Icons.report,color: Colors.red,),
-                  title: Text('Report',style: TextStyle(color: Colors.red),),
-                  onTap: ()async {
-                     log(widget.post.id);
-                    await databaseProvider.deletePost(widget.post.id);
+                  leading: Icon(
+                    Icons.report,
+                    color: Colors.red,
+                  ),
+                  title: Text(
+                    'Report',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  onTap: () async {
                     pop(context);
                   },
                 ),
