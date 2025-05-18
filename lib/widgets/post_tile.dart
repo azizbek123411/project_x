@@ -29,6 +29,14 @@ class _PostTileState extends State<PostTile> {
     context,
   );
 
+  void _toggleLikePost() async {
+    try {
+      await databaseProvider.toggeleLike(widget.post.id);
+    } catch (e, st) {
+      log("Error: $e, StackTrace:$st");
+    }
+  }
+
   void _showOptions() {
     String currentUid = AuthService().getCurrentUid();
     final bool isOwnPost = widget.post.uid == currentUid;
@@ -83,6 +91,8 @@ class _PostTileState extends State<PostTile> {
 
   @override
   Widget build(BuildContext context) {
+    bool likedByCurrentUser =
+        listeningProvider.isPostLikedByCurrentUser(widget.post.id);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -149,6 +159,27 @@ class _PostTileState extends State<PostTile> {
               ),
             ),
           ),
+        ),
+        Row(
+          children: [
+            IconButton(
+              onPressed: _toggleLikePost,
+              icon: likedByCurrentUser
+                  ? Icon(
+                      Icons.favorite_rounded,
+                      color: Colors.red,
+                    )
+                  : Icon(
+                      Icons.favorite_outline_rounded,
+                    ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.comment_outlined,
+              ),
+            ),
+          ],
         ),
         Divider(
           color: Colors.grey.shade800,

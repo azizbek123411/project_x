@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:project_x/models/post.dart';
 import 'package:project_x/models/user.dart';
@@ -77,5 +79,18 @@ int getLikeCount(String postId)=>_likeCounts[postId]!;
       _likeCounts[postId]=(_likeCounts[postId]??0)+1;
     }
     notifyListeners();
+
+
+
+    try{
+      await _db.toggleLikeInFirebase(postId);
+    }
+    catch(e,st){
+      log("Error:$e,StackTrace:$st");
+
+      _likedPosts=likedPostsOriginal;
+      _likeCounts=likeCountOriginal;
+      notifyListeners();
+    }
    }
 }

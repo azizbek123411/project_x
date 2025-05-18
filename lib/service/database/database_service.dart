@@ -108,7 +108,7 @@ class DatabaseService {
         DocumentSnapshot postSnapshot = await transaction.get(postDoc);
         List<String> likedBy = List<String>.from(postSnapshot['likedBy'] ?? []);
 
-        int currentLikeCount = postSnapshot['likes'];
+        int currentLikeCount = postSnapshot['likeCount'];
 
         if (!likedBy.contains(uid)) {
           likedBy.add(uid);
