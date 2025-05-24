@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:project_x/models/comment.dart';
 import 'package:project_x/models/post.dart';
 import 'package:project_x/models/user.dart';
 import 'package:project_x/service/auth/auth_service.dart';
@@ -94,4 +95,30 @@ int getLikeCount(String postId)=>_likeCounts[postId]??0;
       notifyListeners();
     }
    }
+
+
+
+final Map<String,List<Comment>> _comments={};
+
+List<Comment> getComments(String postId)=>_comments[postId]??[];
+
+Future<void> loadComments(String postId)async{
+  final allComments=await _db.getCommentsFromFirebase(postId);
+  _comments[postId]=allComments;
+  notifyListeners();
+
+}
+
+
+Future<void> addComment(String postId,String message)async{
+  await _db.addCommentInFirebase(postId, message);
+  await loadComments(postId);
+}
+
+
+Future<void> deleteComment(String commentId,postId)async{
+  await _db.deleteCommentInFirebase(commentId);
+  await loadComments(postId);
+}
+
 }

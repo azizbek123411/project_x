@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:project_x/models/comment.dart';
 import 'package:project_x/models/post.dart';
 import 'package:project_x/models/user.dart';
 import 'package:project_x/service/auth/auth_service.dart';
@@ -125,6 +126,52 @@ class DatabaseService {
       });
     } catch (e, st) {
       log("Error:$e, StackTrace:$st");
+    }
+  }
+
+  Future<void> addCommentInFirebase(String postId, String message) async {
+    try {
+      String uid = _auth.currentUser!.uid;
+      UserProfile? user = await getUserFromFirebase(uid);
+
+      Comment newComment = Comment(
+          id: '',
+          postId: postId,
+          name: user!.name,
+          uid: uid,
+          username: user.username,
+          message: message,
+          timestamp: Timestamp.now());
+
+      Map<String, dynamic> newCommentMap = newComment.toMap();
+      await _db.collection('Comments').add(newCommentMap);
+    } catch (e, st) {
+      log('Error:$e,StackTrace:$st');
+    }
+  }
+
+
+
+  Future<void>deleteCommentInFirebase(String commentId)async{
+    try{
+      await _db.collection('Comments').doc(commentId).delete();
+    }
+    catch(e,st){
+      log("Error:$e,StackTrace:$st");
+    }
+  }
+
+
+
+
+  Future<List<Comment>>getCommentsFromFirebase(String postId)async{
+    try{
+      QuerySnapshot snapshot=await _db.collection('Comments').where('PostId',isEqualTo:postId).get();
+      return snapshot.docs.map((doc)=>Comment.fromDocument(doc)).toList();
+    }
+    catch(e,st){
+      log("Error:$e,StackTrace:$st");
+      return [];
     }
   }
 }
