@@ -166,7 +166,7 @@ class DatabaseService {
 
   Future<List<Comment>>getCommentsFromFirebase(String postId)async{
     try{
-      QuerySnapshot snapshot=await _db.collection('Comments').where('PostId',isEqualTo:postId).get();
+      QuerySnapshot snapshot=await _db.collection('Comments').where('postId',isEqualTo:postId).get();
       return snapshot.docs.map((doc)=>Comment.fromDocument(doc)).toList();
     }
     catch(e,st){

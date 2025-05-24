@@ -31,6 +31,15 @@ class _PostTileState extends State<PostTile> {
     context,
   );
 
+
+
+@override
+  void initState() {
+    super.initState();
+    loadComments();
+  }
+
+
   void _openNewCommentBox() {
     showDialog(
         context: context,
@@ -55,6 +64,10 @@ class _PostTileState extends State<PostTile> {
     } catch (e, st) {
       log("Error: $e, StackTrace:$st");
     }
+  }
+
+  Future<void> loadComments()async{
+    await databaseProvider.loadComments(widget.post.id);
   }
 
   void _toggleLikePost() async {
