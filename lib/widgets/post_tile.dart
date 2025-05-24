@@ -37,6 +37,10 @@ class _PostTileState extends State<PostTile> {
     }
   }
 
+
+
+
+
   void _showOptions() {
     String currentUid = AuthService().getCurrentUid();
     final bool isOwnPost = widget.post.uid == currentUid;
@@ -93,6 +97,7 @@ class _PostTileState extends State<PostTile> {
   Widget build(BuildContext context) {
     bool likedByCurrentUser =
         listeningProvider.isPostLikedByCurrentUser(widget.post.id);
+        int likeCount=listeningProvider.getLikeCount(widget.post.id)+1;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -173,6 +178,7 @@ class _PostTileState extends State<PostTile> {
                       Icons.favorite_outline_rounded,
                     ),
             ),
+            Text(likeCount==0?'':likeCount.toString()),
             IconButton(
               onPressed: () {},
               icon: Icon(
