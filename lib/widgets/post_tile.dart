@@ -5,6 +5,7 @@ import 'package:project_x/helper/navigation.dart';
 import 'package:project_x/models/post.dart';
 import 'package:project_x/service/auth/auth_service.dart';
 import 'package:project_x/service/database/database_provider.dart';
+import 'package:project_x/widgets/my_input_alert_box.dart';
 import 'package:provider/provider.dart';
 
 class PostTile extends StatefulWidget {
@@ -23,11 +24,38 @@ class PostTile extends StatefulWidget {
 }
 
 class _PostTileState extends State<PostTile> {
+  final commentController = TextEditingController();
   late final databaseProvider =
       Provider.of<DatabaseProvider>(context, listen: false);
   late final listeningProvider = Provider.of<DatabaseProvider>(
     context,
   );
+
+  void _openNewCommentBox() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return MyInputAlertBox(
+            controller: commentController,
+            hintTitle: 'New Comment',
+            onTap: () async {
+              await _addComment();
+              commentController.clear();
+            },
+            onPressedText: 'Comment',
+          );
+        });
+  }
+
+  Future<void> _addComment() async {
+    if (commentController.text.isEmpty) return;
+    try {
+      await databaseProvider.addComment(
+          widget.post.id, commentController.text.trim());
+    } catch (e, st) {
+      log("Error: $e, StackTrace:$st");
+    }
+  }
 
   void _toggleLikePost() async {
     try {
@@ -36,10 +64,6 @@ class _PostTileState extends State<PostTile> {
       log("Error: $e, StackTrace:$st");
     }
   }
-
-
-
-
 
   void _showOptions() {
     String currentUid = AuthService().getCurrentUid();
@@ -97,7 +121,9 @@ class _PostTileState extends State<PostTile> {
   Widget build(BuildContext context) {
     bool likedByCurrentUser =
         listeningProvider.isPostLikedByCurrentUser(widget.post.id);
-        int likeCount=listeningProvider.getLikeCount(widget.post.id)+1;
+    int likeCount = listeningProvider.getLikeCount(widget.post.id) + 1;
+
+    int commentCount = listeningProvider.getComments(widget.post.id).length;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -178,13 +204,14 @@ class _PostTileState extends State<PostTile> {
                       Icons.favorite_outline_rounded,
                     ),
             ),
-            Text(likeCount==0?'':likeCount.toString()),
+            Text(likeCount == 0 ? '' : likeCount.toString()),
             IconButton(
-              onPressed: () {},
+              onPressed: _openNewCommentBox,
               icon: Icon(
                 Icons.comment_outlined,
               ),
             ),
+            Text(commentCount == 0 ? '' : commentCount.toString()),
           ],
         ),
         Divider(
