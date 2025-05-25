@@ -64,22 +64,14 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  final _auth = AuthService();
-  void logout() async {
-    await _auth.logOut();
-  }
+
 
   @override
   Widget build(BuildContext context) {
     final filterPosts = listeningProvider.filterUserPosts(widget.uid);
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: logout,
-            icon: const Icon(Icons.logout),
-          ),
-        ],
+       
         title: Text(
           isLoading ? '...' : user!.name,
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),

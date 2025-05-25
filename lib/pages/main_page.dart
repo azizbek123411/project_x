@@ -4,6 +4,7 @@ import 'package:project_x/service/auth/auth_service.dart';
 
 import 'navbar_pages/profile_page.dart';
 import 'navbar_pages/search_page.dart';
+import 'navbar_pages/settings.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -22,6 +23,7 @@ class _MainPageState extends State<MainPage> {
     HomePage(),
     SearchPage(),
     ProfilePage(uid: AuthService().getCurrentUid(),),
+    Settings()
   ];
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,8 @@ class _MainPageState extends State<MainPage> {
         children:[ _pages[initialIndex]],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey,
         currentIndex: initialIndex,
         showSelectedLabels: true,
         showUnselectedLabels: false,
@@ -54,6 +58,10 @@ class _MainPageState extends State<MainPage> {
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Profile',
+        ),
+         BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Settings',
         ),
       ],
       ),

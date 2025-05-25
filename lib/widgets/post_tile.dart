@@ -31,14 +31,11 @@ class _PostTileState extends State<PostTile> {
     context,
   );
 
-
-
-@override
+  @override
   void initState() {
     super.initState();
     loadComments();
   }
-
 
   void _openNewCommentBox() {
     showDialog(
@@ -66,7 +63,7 @@ class _PostTileState extends State<PostTile> {
     }
   }
 
-  Future<void> loadComments()async{
+  Future<void> loadComments() async {
     await databaseProvider.loadComments(widget.post.id);
   }
 
@@ -108,6 +105,7 @@ class _PostTileState extends State<PostTile> {
                   ),
                   onTap: () async {
                     pop(context);
+                    _reportConfirmationBox();
                   },
                 ),
                 ListTile(
@@ -115,6 +113,7 @@ class _PostTileState extends State<PostTile> {
                   title: Text('Block'),
                   onTap: () {
                     pop(context);
+                    _blockConfirmationBox();
                   },
                 ),
               ],
@@ -124,6 +123,71 @@ class _PostTileState extends State<PostTile> {
                 onTap: () {
                   pop(context);
                 },
+              ),
+            ],
+          );
+        });
+  }
+
+  void _reportConfirmationBox() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Report Message'),
+            content: Text('Are your sure you want to report this message?'),
+            actions: [
+              TextButton(
+                onPressed: () => pop(context),
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  pop(context);
+                
+                  
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Message reported'),
+                    ),
+                  );
+                    await databaseProvider.reportUser(
+                    widget.post.id,
+                    widget.post.uid,
+                  );
+                },
+                child: Text('Report'),
+              ),
+            ],
+          );
+        });
+  }
+
+  void _blockConfirmationBox() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Block User'),
+            content: Text('Are your sure you want to block this user?'),
+            actions: [
+              TextButton(
+                onPressed: () => pop(context),
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  pop(context);
+                 
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('User blocked'),
+                    ),
+                  ); await databaseProvider.blockUser(
+                    widget.post.uid,
+                  );
+                },
+                child: Text('Block'),
               ),
             ],
           );
