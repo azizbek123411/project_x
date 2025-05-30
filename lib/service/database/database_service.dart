@@ -209,6 +209,27 @@ class DatabaseService {
         .doc(currentUserId)
         .collection('BlockedUsers')
         .get();
-        return snapshot.docs.map((doc)=>doc.id).toList();
+    return snapshot.docs.map((doc) => doc.id).toList();
+  }
+
+  Future<void> deleteUserFromFirebase(String uid) async {
+    WriteBatch batch = _db.batch();
+
+    DocumentReference userDoc = _db.collection('Users').doc(uid);
+    batch.delete(userDoc);
+
+    QuerySnapshot userPosts =
+        await _db.collection('Posts').where('uid', isEqualTo: uid).get();
+    for (var post in userPosts.docs) {
+      batch.delete(post.reference);
+    }
+
+    QuerySnapshot userComments =
+        await _db.collection('Comments').where('uid', isEqualTo: uid).get();
+    for (var comment in userComments.docs) {
+      batch.delete(comment.reference);
+    }
+
+    await batch.commit();
   }
 }

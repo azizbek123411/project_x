@@ -33,4 +33,12 @@ class AuthService {
   Future<void> logOut()async{
     await _auth.signOut();
   }
+
+
+  Future<void> deleteAccount()async{
+    User? user=getCurrentUser();
+    if(user != null){
+      await user.delete();
+    }
+  }
 }
