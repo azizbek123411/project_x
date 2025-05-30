@@ -24,7 +24,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       darkTheme: ThemeData.dark(),
-      home: AuthGate(),
+      initialRoute: '/',
+      routes: {
+        '/':(context)=>const AuthGate(),
+      },
     );
   }
 }

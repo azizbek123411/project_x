@@ -230,6 +230,19 @@ class DatabaseService {
       batch.delete(comment.reference);
     }
 
+
+    QuerySnapshot allPosts=await _db.collection('Posts').get();
+    for(QueryDocumentSnapshot post in allPosts.docs){
+      Map<String,dynamic>postData=post.data() as Map<String,dynamic>;
+      var likedBy=postData['likedBy'] as List<dynamic>??[];
+      if(likedBy.contains(uid)){
+        batch.update(post.reference, {
+          'likedBy':FieldValue.arrayRemove([uid]),
+          'likeCount':FieldValue.increment(-1)
+        });
+      }
+    }
+
     await batch.commit();
   }
 }

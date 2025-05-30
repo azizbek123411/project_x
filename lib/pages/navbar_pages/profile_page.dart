@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import '../../helper/navigation.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String uid;
+  final String? uid;
   const ProfilePage({super.key, required this.uid});
 
   @override
@@ -58,7 +58,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> loadUsers() async {
-    user = await databaseProvider.userProfile(widget.uid);
+    setState(() {
+      isLoading = true;
+    });
+    user = await databaseProvider.userProfile(widget.uid!);
     setState(() {
       isLoading = false;
     });
@@ -68,7 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final filterPosts = listeningProvider.filterUserPosts(widget.uid);
+    final filterPosts = listeningProvider.filterUserPosts(widget.uid!);
     return Scaffold(
       appBar: AppBar(
        
@@ -93,6 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             SizedBox(height: 20),
+            if(user != null && user!.uid==currentUserid)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -13,11 +13,6 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-
-
-
-
-
   void _showLogOutBox() {
     showDialog(
         context: context,
@@ -31,9 +26,9 @@ class _SettingsState extends State<Settings> {
                 child: Text('Cancel'),
               ),
               TextButton(
-                onPressed: ()  {
-                logout();
-                pop(context);
+                onPressed: () {
+                  logout();
+                  pop(context);
                 },
                 child: Text('Logout'),
               ),
@@ -41,10 +36,39 @@ class _SettingsState extends State<Settings> {
           );
         });
   }
-    final _auth = AuthService();
+
+  void confirmDelete() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Delete Account'),
+            content: Text('Are your sure you want to delete your account?'),
+            actions: [
+              TextButton(
+                onPressed: () => pop(context),
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  
+
+                  AuthService().deleteAccount();
+
+                  Navigator.pushNamedAndRemoveUntil(context, '/', (route)=>false);
+                },
+                child: Text('Delete'),
+              ),
+            ],
+          );
+        });
+  }
+
+  final _auth = AuthService();
   void logout() async {
     await _auth.logOut();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,11 +77,20 @@ class _SettingsState extends State<Settings> {
       ),
       body: ListView(
         children: [
-         SettingsTile(text: 'Logout',onTap:_showLogOutBox, 
-          ) ,
           SettingsTile(
-            text:"Blocked Users",
-            onTap: ()=>pushPage(context, BlokedusersPage(),),
+            text: 'Logout',
+            onTap: _showLogOutBox,
+          ),
+          SettingsTile(
+            text: "Blocked Users",
+            onTap: () => pushPage(
+              context,
+              BlokedusersPage(),
+            ),
+          ),
+          SettingsTile(
+            text: 'Delete Account',
+            onTap: () => confirmDelete()
           ),
         ],
       ),
